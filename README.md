@@ -42,10 +42,10 @@ This code pattern is for developers looking to create blockchain applications wi
 # Running the Application
 
 ## Prerequisite
-- [Go](https://golang.org/dl/) (version 1.11.1)
-- [Docker](https://www.docker.com/) (version 17.06.2-ce or greater)
-- [Node](https://nodejs.org/en/) (version 8.9.x or greater)
-- [npm](https://www.npmjs.com/) (version 5.6.0)
+- [Go](https://golang.org/dl/) (version 1.14)
+- [Docker](https://www.docker.com/) (version 19.03.x or greater)
+- [Node](https://nodejs.org/en/) (version 12.13.x or greater)
+- [npm](https://www.npmjs.com/) (version 6.12.x)
 
 ## Steps
 
@@ -66,22 +66,21 @@ In this step, we will setup fabric locally using docker containers, install the 
 
 ### Clean docker and set GOPATH
 
-This will remove all your docker containers and images!
+This will remove all your hyperledger docker containers and images!
 ```
-docker stop $(docker ps -a -q)
-docker rm $(docker ps -a -q)
-docker rmi $(docker images -q) -f
+docker rmi -f $(docker images | grep hyperledger | awk '/^.*\s/ {print $3}')
 ```
 
 Make sure to set GOPATH to your go installation
 ```
-export GOPATH=$HOME/go
+export GOPATH=$HOME/.go
 ```
 
 ### Get Fabric Samples and download Fabric images
 
 Clone the [fabric-samples](https://github.com/hyperledger/fabric-samples) repo in your `GOPATH/src/github.com/hyperledger` directory:
 ```
+mkdir -p $GOPATH/src/github.com/hyperledger
 cd $GOPATH/src/github.com/hyperledger/
 git clone https://github.com/hyperledger/fabric-samples.git
 ```
@@ -92,9 +91,14 @@ cd fabric-samples
 git checkout release-1.4
 ```
 
+Make binaries available on your path
+```
+export PATH=$GOPATH/src/github.com/hyperledger/fabric-samples/bin:$PATH
+```
+
 Download the docker images
 ```
-./scripts/bootstrap.sh
+curl -sSL https://bit.ly/2ysbOFE | bash -s -- 1.4.0 1.4.0 0.4.18
 ```
 
 ### Mount the EVM Chaincode and start the network
