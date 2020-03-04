@@ -180,7 +180,7 @@ This will start Fab3 at `http://localhost:5000`
 The following directions require ``node`` and ``web3`` to be installed.
 To install the same version of `web3` run:
 ```
-npm install web3
+npm install web3@0.20.2
 ```
 
 After installing the correct version of `web3`, in a node session run the
